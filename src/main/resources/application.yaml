@@ -1,20 +1,20 @@
 server:
-  port: 8083 # Puerto asignado para el microservicio de clientes
+  port: ${PORT:8083}
 
 spring:
   application:
-    name: ms-usuarios # Nombre con el que se registrará en el panel de Eureka
+    name: ms-usuarios
 
   # ===================================
   # Configuración de Rendimiento
   # ===================================
   threads:
     virtual:
-      enabled: true # Aprovecha los hilos virtuales de tu JDK moderno
+      enabled: true
 
   mvc:
     problemdetails:
-      enabled: false # Desactivado para usar tu GlobalExceptionHandler personalizado
+      enabled: false
 
   # ===================================
   # Conexión a PostgreSQL (NeonTech)
@@ -25,7 +25,6 @@ spring:
     password: npg_pCkU9F6jWoZT
     driver-class-name: org.postgresql.Driver
 
-    # Pool de conexiones optimizado para el plan gratuito de Neon
     hikari:
       maximum-pool-size: 3
 
@@ -35,11 +34,11 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update # Creará las tablas automáticamente (Usuario, Perfil, etc.)
-    show-sql: true # Muestra las consultas en consola
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true # Formatea el SQL para que sea legible
+        format_sql: true
 
 # ===================================
 # Configuración del Cliente Eureka
@@ -50,26 +49,35 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: https://eureka-server-wp64.onrender.com/eureka/
+
   instance:
     prefer-ip-address: false
     hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
-    # ─── CONFIGURACIÓN DEFINITIVA PARA RENDER ───
+
     secure-port-enabled: true
     secure-port: 443
     non-secure-port-enabled: false
-    # ===================================
+
+    home-page-url: https://${RENDER_EXTERNAL_HOSTNAME}/
+    status-page-url: https://${RENDER_EXTERNAL_HOSTNAME}/actuator/info
+    health-check-url: https://${RENDER_EXTERNAL_HOSTNAME}/actuator/health
+
+# ===================================
 # Configuración de Seguridad y JWT
+# ===================================
 feign:
   client:
     config:
       ms-clientes:
         loggerLevel: full
+
 jwt:
-  # Esta es una clave secreta generada en Hexadecimal (Mínimo 256 bits requeridos por seguridad)
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-  # Tiempo de vida del token en milisegundos (86400000 ms = 1 día)
   expiration: 86400000
 
+# ===================================
+# Swagger
+# ===================================
 springdoc:
   api-docs:
     enabled: true
