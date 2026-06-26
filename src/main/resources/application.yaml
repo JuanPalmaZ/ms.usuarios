@@ -53,13 +53,7 @@ eureka:
   instance:
     prefer-ip-address: false
     hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
-    # ─── AGREGA ESTA LÍNEA CRUCIAL ───
     non-secure-port: 80
-  instance:
-    # 2. Desactivamos el uso de IP interna
-    prefer-ip-address: false
-    # 3. Le decimos que use el hostname que Render le asigna (si existe), o localhost en local
-    hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
     # ===================================
 # Configuración de Seguridad y JWT
 feign:
