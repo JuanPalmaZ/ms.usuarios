@@ -49,8 +49,12 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      # 1. Agregado el /eureka/ al final
       defaultZone: https://eureka-server-wp64.onrender.com/eureka/
+  instance:
+    prefer-ip-address: false
+    hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
+    # ─── AGREGA ESTA LÍNEA CRUCIAL ───
+    non-secure-port: 80
   instance:
     # 2. Desactivamos el uso de IP interna
     prefer-ip-address: false
