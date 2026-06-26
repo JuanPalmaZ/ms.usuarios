@@ -46,13 +46,16 @@ spring:
 # ===================================
 eureka:
   client:
-    register-with-eureka: true # Se registra en el servidor central
-    fetch-registry: true # Descarga la lista de otros servicios
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/ # Dirección del servidor Eureka
+      # 1. Agregado el /eureka/ al final
+      defaultZone: https://eureka-server-wp64.onrender.com/eureka/
   instance:
-    prefer-ip-address: true # Facilita la comunicación interna mediante IP
-
+    # 2. Desactivamos el uso de IP interna
+    prefer-ip-address: false
+    # 3. Le decimos que use el hostname que Render le asigna (si existe), o localhost en local
+    hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
     # ===================================
 # Configuración de Seguridad y JWT
 feign:
@@ -65,3 +68,10 @@ jwt:
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
   # Tiempo de vida del token en milisegundos (86400000 ms = 1 día)
   expiration: 86400000
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /doc/swagger-ui.html

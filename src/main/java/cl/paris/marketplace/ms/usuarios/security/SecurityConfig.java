@@ -32,19 +32,25 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/api/roles", "/api/roles/**",
-                        "/api/auth", "/api/auth/**",
-                        "/error"
-                ).permitAll()
-                // EXCEPCIÓN: Solo el método POST (Registro) es público en /api/usuarios
-                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/usuarios").permitAll()
-                // Todo lo demas (incluyendo crear perfil o buscar completo) requiere token
-                .anyRequest().authenticated()
-                )
+                        .requestMatchers(
+                                "/api/roles",
+                                "/api/roles/**",
+                                "/api/auth",
+                                "/api/auth/**",
+                                "/error",
+                                "/v3/api-docs",
+                                "/doc/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/doc/swagger-ui.html/**")
+                        .permitAll()
+                        // EXCEPCIÓN: Solo el método POST (Registro) es público en /api/usuarios
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/usuarios").permitAll()
+                        // Todo lo demas (incluyendo crear perfil o buscar completo) requiere token
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -54,7 +60,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder()); 
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
