@@ -53,7 +53,10 @@ eureka:
   instance:
     prefer-ip-address: false
     hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
-    non-secure-port: 80
+    # ─── CONFIGURACIÓN DEFINITIVA PARA RENDER ───
+    secure-port-enabled: true
+    secure-port: 443
+    non-secure-port-enabled: false
     # ===================================
 # Configuración de Seguridad y JWT
 feign:
